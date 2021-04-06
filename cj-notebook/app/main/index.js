@@ -1,8 +1,9 @@
+import electron from 'electron';
+import path from 'path';
+import url from 'url';
+import ChildProcess from 'child_process';
 
-const electron = require('electron');
-const path = require('path');
-const url = require('url');
-const ChildProcess = require('child_process');
+import { setMenu, getExplorerMenuItem, getExplorerFileMenuItem, getExplorerProjectItemMenu, getExplorerFileItemMenu } from './menu';
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -25,6 +26,7 @@ function createWindow() {
       webPreferences: {
         nodeIntegration: true,
         webviewTag: true,
+        nodeIntegrationInWorker: true
       },
     };
     if (process.platform === 'linux') {
@@ -53,7 +55,7 @@ function createWindow() {
     }));
   
     // 设置菜单
-    //setMenu(mainWindow);
+    setMenu(mainWindow);
   
     // const explorerMenu = getExplorerMenuItem(mainWindow);
     // const exploereFileMenu = getExplorerFileMenuItem(mainWindow);
@@ -89,17 +91,7 @@ function createWindow() {
       }
     });
   
-    // 配置插件
-    // if (process.env.NODE_ENV === 'development') {
-    //   require('devtron').install();
-    //   /* eslint-disable import/no-unresolved */
-    //   const CONFIG = require('../../config/devconfig.json');
-    //   const extensions = CONFIG.extensions;
-    //   for (const ex of extensions) {
-    //     BrowserWindow.addDevToolsExtension(ex);
-    //   }
-    //   /* eslint-enable */
-    // }
+
   }
   
   // 只允许单个实例运行

@@ -112,3 +112,34 @@ electron version: electron 的版本
 
 开始打包
 npm run package
+
+
+# 遇到的问题
+## 关于 import require使用冲突的问题
+默认创建的项目，只能用 require,不能用import，如果使用import会报哪下错误
+```
+SyntaxError: Cannot use import statement outside a module
+```
+如果按网上的方法在package.json文件中加入
+```
+  "type": "module",
+```
+则报如下错误 ：
+```
+Error [ERR_REQUIRE_ESM]: Must use import to load ES Module: .\index.js  require() of ES modules is not supported.
+
+node_modules\electron\dist\resources\default_app.asar\main.js is an ES module file as it is a .js file whose nearest parent package.json contains "type": "module" which defines all .js files in that package scope as ES modules.
+```
+这种陷入了一个怪圈，两者相互排斥
+所以正确的方法不是加入type: module,则是引入 babel 动态转换 electron内置的浏览器内核不支持的ES6/JSX/Promise等语法为ES5语法，实现无缝结合
+https://blog.csdn.net/lcg890831/article/details/84343638
+https://zhuanlan.zhihu.com/p/43249121
+
+https://www.imooc.com/article/39978
+https://ask.csdn.net/questions/7413122 --依然没有解决
+
+
+用下面方法解决
+启动命令改成：electron -r @babel/register .
+package加入babel相关依赖
+并新增.babelrc文件
