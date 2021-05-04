@@ -1,0 +1,357 @@
+@import "color.scss";
+@import "common.scss";
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+li {
+	list-style-type: none;
+}
+
+.anticon {
+	cursor: pointer;
+}
+
+html {
+	font-family: "BlinkMacSystemFont", "Helvetica Neue", Helvetica, "Microsoft YaHei", "微软雅黑", "Arial", "Lucida Grande", "Segoe UI", Ubuntu, Cantarell, sans-serif;
+	font-size: 14px;
+	line-height: 1.5;
+	overflow: hidden;
+	color: $color;
+}
+
+html, body, #root {
+	width: 100%;
+	height: 100%;
+	background-color: $htmlBg;
+}
+
+#root {
+	min-width: 978px;
+}
+
+#blur {
+	position: fixed;
+	z-index: -1;
+	filter: blur(10rem);
+	-webkit-filter: blur(10rem);
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background-color: rgba($color: #ffffff, $alpha: 0.66);
+}
+
+.container {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	position: relative;
+
+	&.darwin:before {
+		content: "";
+		position: absolute;
+		z-index: -1;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		background-color: rgba($color: #ffffff, $alpha: 0.5);
+	}
+}
+
+.no-select {
+	-webkit-user-select: none;
+	user-select: none;
+	cursor: default;
+}
+
+/* scrollbars */
+.yo-track-vertical, .yo-track-horizontal {
+	position: absolute;
+	border-radius: 3px;
+
+	& > div {
+		background-color: rgba($color: #000000, $alpha: .2);
+	}
+}
+
+.yo-track-vertical {
+	width: 6px;
+	right: 2px;
+	bottom: 2px;
+	top: 2px;
+}
+
+.yo-track-horizontal {
+	height: 6px;
+	right: 2px;
+	bottom: 2px;
+	left: 2px;
+}
+
+/* scrollbars end */
+
+/* 工具栏 */
+.tool-bar {
+	flex: 0 0 4.5rem;
+	width: 4.5rem;
+	height: 100%;
+	-webkit-app-region: drag;
+	overflow: hidden;
+	position: relative;
+
+	.app-title-bar {
+		width: 100%;
+		height: 3rem;
+	}
+
+	.logo {
+		text-align: center;
+		margin-top: 1.6rem;
+		img {
+			width: 3.6rem;
+			height: 3.6rem;
+			border-radius: 50%;
+		}
+
+		.avatar {
+			width: 3.6rem;
+			height: 3.6rem;
+			border: 3px solid #e4d3cc;
+			animation: a-fade-in .5s ease;
+		}
+	}
+
+	.menu-list {
+		margin-top: 3rem;
+
+		.menu-item {
+			text-align: center;
+			margin-bottom: 1.2rem;
+			cursor: pointer;
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+
+		.menu-item-radius {
+			border-radius: 50%;
+			height: 2.6rem;
+			width: 2.6rem;
+			display: inline-block;
+			line-height: 2.6rem;
+			transition: background-color, box-shadow .2s ease-in-out;
+		}
+
+		.menu-svg {
+			margin-top: .6rem;
+			width: 1.4rem;
+			height: 1.4rem;
+			transition: fill .2s ease-in-out;
+		}
+	}
+	.setting-wrap {
+		position: absolute;
+		left: 0;
+		bottom: 2rem;
+		width: 100%;
+		height: 2rem;
+		text-align: center;
+		.setting {
+			height: 2rem;
+			width: 2rem;
+			cursor: pointer;
+			transition: transform .2s ease-in-out;
+
+			&:hover {
+				transform: scale(1.1, 1.1);
+			}
+		}
+	}
+}
+
+/* linux or windows tool-bar */
+.not-darwin {
+
+	.tool-bar {
+		flex: 0 0 4rem;
+		width: 4rem;
+	}
+
+
+	.logo {
+		text-align: center;
+		margin-top: 0;
+		img {
+			width: 3.3rem;
+			height: 3.3rem;
+			border-radius: 50%;
+		}
+
+		.avatar {
+			width: 3.3rem;
+			height: 3.3rem;
+		}
+	}
+
+	.menu-list .menu-item-radius {
+		height: 2.5rem;
+		width: 2.5rem;
+		line-height: 2.5rem;
+	}
+
+	.setting-wrap .setting {
+		width: 1.8rem;
+		height: 1.8rem;
+	}
+}
+
+.app-lounch-loading {
+	z-index: 9999;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: $navBg;
+
+	.loading-cont {
+		position: relative;
+		width: 30%;
+		height: 30%;
+		top: 35%;
+		left: 35%;
+		fill: none;
+		stroke-width: 1;
+		stroke: aliceblue;
+	}
+}
+
+.nav {
+	background-color: $navBg;
+	position: relative;
+	padding-top: 8.2rem;
+	width: $navWidth;
+	overflow-x: hidden;
+	overflow-y: auto;
+
+	border-right: 1px solid $colorBorder;
+
+	.nav-header {
+		position: fixed;
+		width: $navWidth;
+		top: 0;
+		left: 0;
+		height: 8.2rem;
+		background-color: $navBg;
+		border-right: 1px solid $colorBorder;
+	}
+
+	.logo-cont {
+		background-color: $headerBg;
+	}
+}
+
+.sub-window {
+	color: $fontColor;
+	padding: 1rem;
+
+	.error-tip {
+		color: $fontColor;
+		font-size: 1.5rem;
+	}
+
+	.name {
+		padding: 0.5rem;
+		color: $fontColor;
+		border-bottom: 1px solid $darkBorder;
+
+		i {
+			font-size: 1rem;
+		}
+	}
+}
+
+.cursor-pointer {
+	cursor: pointer;
+}
+
+// 公用的loading样式
+.loading-default {
+	position: absolute;
+	z-index: 9999;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	left: 0;
+	top: 0;
+	background-color: rgba($color: #ffffff, $alpha: 0.7);
+
+	&.loading-fullscreen {
+		position: fixed;
+	}
+	img {
+		margin-top: 25%;
+	}
+
+	.loading-tips {
+		color: #923f2b;
+	}
+}
+
+// 公用图片样式
+.yo-image {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+
+	.shadow {
+		position: absolute;
+		width: 80%;
+		height: 80%;
+		top: 10%;
+		left: 10%;
+		opacity: .3;
+		background-image: url("../images/logo.png");
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+		@include zoom-in(1);
+
+		&.hide {
+			display: none;
+		}
+	}
+
+	.yo-img {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: scale(1) translate(-50%, -50%);
+		visibility: hidden;
+		display: block;
+		transition: transform .15s ease-in-out;
+
+		&:hover {
+			transform: scale(1.2) translate(-40%, -40%);
+		}
+
+		&.show {
+			visibility: visible;
+		}
+	}
+}
+
+@keyframes a-fade-in {
+	0% {
+		transform: rotate(-360deg);
+		opacity: 0;
+	}
+	100% {
+		transform: rotate(0);
+		opacity: 1;
+	}
+}

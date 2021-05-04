@@ -1,0 +1,47 @@
+@mixin display-flex {
+	display: flex;
+	display: -webkit-flex;
+}
+
+@mixin project-item {
+	height: 3.5rem;
+	line-height: 3.5rem;
+	font-size: 0.95rem;
+	color: rgba(0, 0, 0, 0.45);
+	cursor: pointer;
+}
+
+@mixin normal-ipt {
+	height: 1.8rem;
+	font-size: 0.9rem;
+	padding: 0 0.2rem;
+	color: rgba(0, 0, 0, 0.5);
+	cursor: pointer;
+}
+
+@mixin text-ellipsis {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+/**
+ * zoom: 0 - 99
+ */
+@mixin zoom-in($value: 0) {
+	z-index: $value;
+}
+
+/**
+ * zoom: 100 - 299
+ */
+@mixin zoom-out($value) {
+	z-index: $value;
+}
+
+/**
+ * zoom: 300-999
+ */
+@mixin zoom-windows($value) {
+	z-index: $value;
+}

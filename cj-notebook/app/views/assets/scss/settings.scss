@@ -1,0 +1,131 @@
+@import "common.scss";
+@import "color.scss";
+
+.settings-root {
+	flex: 1 1 auto;
+	@include display-flex;
+	flex-direction: column;
+	position: relative;
+
+	.settings-toc {
+		position: absolute;
+		left: 5%;
+		top: 6rem;
+		@include zoom-in(99);
+
+		.ant-anchor-wrapper {
+			background-color: transparent;
+			padding-left: 0;
+			margin-left: 0;
+			padding-right: 4px;
+			margin-right: -4px;
+		}
+
+		.ant-anchor-link {
+			padding: 8px 16px;
+			line-height: 1.2;
+		}
+
+		.ant-anchor-ink {
+			right: 0;
+			left: unset;
+		}
+
+		.ant-anchor-link-title {
+			&:focus {
+				text-decoration: none;
+			}
+		}
+	}
+
+
+	.modules {
+		flex: 1 1 auto;
+		height: 0;
+		overflow-y: auto;
+
+		.setting-tabs {
+			height: 100%;
+			width: 90%;
+			margin: 0 auto;
+			padding: 3rem 0;
+		}
+
+		.settings-module {
+			width: 75%;
+			margin: 0 5% 0 20%;
+			padding: 2rem 3rem;
+
+			&:first-child {
+				padding-top: 3rem;
+			}
+
+			.module-title {
+				position: relative;
+				border-bottom: 2px solid $lightHeaderBorder;
+				padding-bottom: 0.5rem;
+				margin-bottom: 1.2rem;
+				height: 2em;
+				span {
+					position: absolute;
+					padding: 0 0.3em;
+					bottom: 0;
+					border-bottom: 2px solid $lightHeaderBorder;
+				}
+			}
+		}
+
+		.anticon-question-circle-o {
+			font-size: 18px;
+		}
+
+		.image-hosting-item {
+			margin-top: 1rem;
+			padding: 1rem 0;
+			border: 1px solid #efefef;
+			border-radius: .5rem;
+			box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, .2);
+		}
+	}
+
+	.font-size-row {
+		color: rgba(0, 0, 0, 0.85);
+		height: 3rem;
+		line-height: 3rem;
+		margin-top: 0.6rem;
+
+		.row-label {
+			padding-right: 0.5em;
+			text-align: right;
+		}
+		.number-col {
+			padding-left: 1em;
+		}
+		.ant-slider-rail {
+			background-color: #e5e5e5;
+		}
+	}
+
+	.about-module {
+		.txt-center {
+			text-align: center;
+		}
+		.logo {
+			width: 6.4rem;
+			height: 6.4rem;
+		}
+		.btn {
+			margin: 0 0.5rem;
+		}
+	}
+
+	.settings-loading {
+		position: fixed;
+		@include zoom-windows(300);
+		background-color: rgba(0, 0, 0, .5);
+
+		.loading-tips {
+			color: #ffffff;
+		}
+	}
+}

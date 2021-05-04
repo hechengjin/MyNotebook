@@ -143,3 +143,27 @@ https://ask.csdn.net/questions/7413122 --依然没有解决
 启动命令改成：electron -r @babel/register .
 package加入babel相关依赖
 并新增.babelrc文件
+
+
+报如下错误
+```
+no such file or directory, scandir 'node_modules\node-sass\vendor
+```
+解决
+```
+npm rebuild node-sass
+```
+
+运行方法：
+先在一个窗口运行
+
+```
+npm run dev:renderer
+```
+再新开一个窗口运行
+```
+npm run dev:main
+```
+因为app\main\index.html里面的
+http://localhost:3001/static/js/bundle.js
+的调用是通过 webpack-dev-server  生成到内存中的没有在输出目录中

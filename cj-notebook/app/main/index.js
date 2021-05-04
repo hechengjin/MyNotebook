@@ -4,6 +4,11 @@ import url from 'url';
 import ChildProcess from 'child_process';
 
 import { setMenu, getExplorerMenuItem, getExplorerFileMenuItem, getExplorerProjectItemMenu, getExplorerFileItemMenu } from './menu';
+import { removeEventListeners, eventListener } from './event';
+
+import schedule from './schedule';
+import * as appPaths from './paths';
+import pkg from '../../package.json';
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -11,7 +16,75 @@ const shell = electron.shell;
 
 app.setName('CJNotebook');
 
+
+function handleSquirrelEvent() {
+  if (process.argv.length === 1) {
+    return false;
+  }
+
+  const appFolder = path.resolve(process.execPath, '..');
+  const rootAtomFolder = path.resolve(appFolder, '..');
+  const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
+  const exeName = path.basename(process.execPath);
+
+  const spawn = (command, args) => {
+    let spawnedProcess;
+    try {
+      spawnedProcess = ChildProcess.spawn(command, args, { detached: true });
+    } catch (error) {
+      console.warn(error);
+    }
+
+    return spawnedProcess;
+  };
+
+  const spawnUpdate = args => spawn(updateDotExe, args);
+  const squirrelEvent = process.argv[1];
+  switch (squirrelEvent) {
+    case '--squirrel-install':
+    case '--squirrel-updated': {
+      // Install desktop and start menu shortcuts
+      spawnUpdate(['--createShortcut', exeName]);
+      setTimeout(app.quit, 1000);
+      return true;
+    }
+    case '--squirrel-uninstall': {
+      spawnUpdate(['--removeShortcut', exeName]);
+      setTimeout(app.quit, 1000);
+      return true;
+    }
+    case '--squirrel-obsolete': {
+      app.quit();
+      return true;
+    }
+    default:
+      return true;
+  }
+}
+
+// this should be placed at top of main.js to handle setup events quickly
+if (process.platform === 'win32' && handleSquirrelEvent() && process.env.NODE_ENV === 'production') {
+  if (handleSquirrelEvent()) {
+    app.quit();
+  }
+}
+
+if (process.platform === 'win32') {
+  app.setAppUserModelId(pkg.build.appId);
+}
+
+
 let mainWindow;
+
+appPaths.initWorkSpace();
+
+if (process.env.NODE_ENV === 'development') {
+  require('electron-watch')(
+    __dirname,
+    'dev:main',
+    process.cwd(),
+  );
+}
 
 
 function createWindow() {
@@ -57,17 +130,17 @@ function createWindow() {
     // 设置菜单
     setMenu(mainWindow);
   
-    // const explorerMenu = getExplorerMenuItem(mainWindow);
-    // const exploereFileMenu = getExplorerFileMenuItem(mainWindow);
-    // const projectItemMenu = getExplorerProjectItemMenu(mainWindow);
-    // const fileItemMenu = getExplorerFileItemMenu(mainWindow);
+    const explorerMenu = getExplorerMenuItem(mainWindow);
+    const exploereFileMenu = getExplorerFileMenuItem(mainWindow);
+    const projectItemMenu = getExplorerProjectItemMenu(mainWindow);
+    const fileItemMenu = getExplorerFileItemMenu(mainWindow);
   
-    // eventListener({
-    //   explorerMenu,
-    //   exploereFileMenu,
-    //   projectItemMenu,
-    //   fileItemMenu,
-    // });
+    eventListener({
+      explorerMenu,
+      exploereFileMenu,
+      projectItemMenu,
+      fileItemMenu,
+    });
   
     const webContents = mainWindow.webContents;
   
@@ -90,7 +163,18 @@ function createWindow() {
         // err
       }
     });
-  
+    // 配置插件
+    // if (process.env.NODE_ENV === 'development') {
+    //   require('devtron').install();
+    //   /* eslint-disable import/no-unresolved */
+    //   const CONFIG = require('../../config/devconfig.json');
+    //   const extensions = CONFIG.extensions;
+    //   for (const ex of extensions) {
+    //     //BrowserWindow.addDevToolsExtension(ex);
+    //     BrowserWindow.loadExtension(ex)
+    //   }
+    //   /* eslint-enable */
+    // }
 
   }
   
@@ -130,5 +214,7 @@ function createWindow() {
   });
   
   app.on('before-quit', () => {
+    // 退出应用关闭定时器
+    schedule.cancelReleases();
   });
   

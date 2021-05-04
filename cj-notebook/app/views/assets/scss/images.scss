@@ -1,0 +1,60 @@
+@import "common.scss";
+
+.images-root {
+	flex: 1 1 auto;
+	@include display-flex;
+	flex-direction: column;
+	position: relative;
+	background-color: rgba(248, 248, 248, 1);
+	color: rgba(0, 0, 0, 0.5);
+
+	.content {
+		flex: 1 1 auto;
+		padding: 0 5%;
+		overflow-y: auto;
+		position: relative;
+
+		.empty {
+			position: absolute;
+			top: 30%;
+			left: 0;
+			width: 100%;
+		}
+
+		.list {
+			@include display-flex;
+			margin: 1.5rem .5rem;
+			flex-wrap: wrap;
+
+			.item {
+				flex: 0 0 11rem;
+				padding: 1.5rem;
+
+				.image-wrap {
+					height: 8rem;
+				}
+			}
+
+			.image-options {
+				margin-top: .6rem;
+
+				.anticon {
+					margin-right: .5rem;
+					transition: transform, color .2s ease-in-out;
+
+					&:hover {
+						transform: scale(1.2, 1.2);
+					}
+
+					&:active {
+						color: #333;
+					}
+
+					&:last-child {
+						margin-right: 0;
+					}
+				}
+			}
+		}
+	}
+}
